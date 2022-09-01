@@ -1,7 +1,7 @@
 import "./form.js";
 import { Tooltip, Toast, Popover } from "bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { initdb, getDb, postDb } from './database';
+import { initdb, getDb, postDb, deleteDb, editDb } from './database';
 import { fetchCards } from "./cards.js";
 import { clearForm, toggleForm } from "./form.js";
 
@@ -56,3 +56,33 @@ form.addEventListener('submit', event => {
   // Reload the DOM
   fetchCards();
 });
+
+window.deleteCard = (e) => {
+  //Grabs id from button element attached to the contact card
+  let id = parseInt(e.id);
+
+  // delete card
+  deleteDb(id);
+  
+  //reload DOM
+  fetchCards();
+};
+
+window.editCard = (e) => {
+  // grabs id from the button element attached to the contact card and sets global variable that will be used in the form element
+  profileId = parseInt(e.dataset.id);
+
+  // grabs information to pre-populate edit form
+  let editName = e.dataset.name;
+  let editEmail = e.dataset.email;
+  let editPhone = e.dataset.phone;
+
+  document.getElementById("name").value = editName;
+  document.getElementById("email").value = editEmail;
+  document.getElementById("phone").value = editPhone;
+
+  form.style.display = "block";
+
+  // toggles submit button so that it now updates an existing contact instead of posting a new one
+  submitBtnToUpdate = true;
+};
